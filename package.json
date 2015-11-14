@@ -1,0 +1,25 @@
+{
+  "name": "CTL",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.13.3",
+    "request-promise": "^1.0.2",
+    "serialport": "^2.0.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tw-blr-iot-ants/CTL.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tw-blr-iot-ants/CTL/issues"
+  },
+  "homepage": "https://github.com/tw-blr-iot-ants/CTL"
+}
