@@ -31,19 +31,20 @@ serialPort.on("open", function () {
 
 var getUserAndPostOrder = function(internalNumber) {
     console.log("getUserAndPostOrder", internalNumber);
-    var url =  'http://localhost:8083/api/users/internalNumber/' + internalNumber;
+    var url =  'http://10.132.127.212:8083/api/users/internalNumber/' + internalNumber;
     var getOptions = { uri: url, headers: {'User-Agent': 'Request-Promise'}};
     rp(getOptions)
         .then(function (response) {
+            console.log("res", response);
             var user = JSON.parse(response)
-            var requestBody = {drinks: [{name: "CTL", quantity: 7}],
+            var requestBody = {drinks: [{name: "CTL", quantity: 1}],
                                isSwipe: 'true',
                                employeeId: user.employeeId,
                                employeeName: user.employeeName};
 
             var postOptions = {
                             method: 'POST',
-                            uri: 'http://localhost:8083/api/orders',
+                            uri: 'http://10.132.127.212:8083/api/orders',
                             body: requestBody,
                             json: true
             };
