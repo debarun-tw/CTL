@@ -39,7 +39,7 @@ var getUserAndPostOrder = function(internalNumber) {
             var user = JSON.parse(response)
             var requestBody = {drinks: [{name: "CTL", quantity: 1}],
                                isSwipe: 'true',
-                               employeeId: user.employeeId,
+                               employeeId: user.empId,
                                employeeName: user.employeeName};
 
             var postOptions = {
