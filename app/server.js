@@ -1,16 +1,15 @@
 var rp = require('request-promise');
 var SerialPort = require("serialport").SerialPort;
 var sp = require("serialport");
+var PROP = require('../properties.js');
 
-var serialPort = new SerialPort("/dev/tty.usbmodem1411", {
+var serialPort = new SerialPort(PROP.usbPort, {
        baudrate: 9600
 });
-
 
 serialPort.on("error", function(err) {
 	console.log("Error opening serial port ", err);
 });
-
 
 serialPort.on("open", function () {
   console.log("!!! Serial port opened !!! ");
@@ -31,7 +30,7 @@ serialPort.on("open", function () {
 
 var getUserAndPostOrder = function(internalNumber) {
     console.log("getUserAndPostOrder", internalNumber);
-    var url =  'http://10.132.127.212:8083/api/users/internalNumber/' + internalNumber;
+    var url =  PROP.server_url + '/api/users/internalNumber/' + internalNumber;
     var getOptions = { uri: url, headers: {'User-Agent': 'Request-Promise'}};
     rp(getOptions)
         .then(function (response) {
