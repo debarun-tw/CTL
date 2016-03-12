@@ -2,20 +2,26 @@ var rp = require('request-promise');
 var SerialPort = require("serialport").SerialPort;
 var sp = require("serialport");
 var PROP = require('../properties.js');
+var ERROR = 'error';
+var OPEN = 'open';
+var DATA = 'data';
+var SUCCESS = 'success';
+var FAILURE = 'failure';
+
 
 var serialPort = new SerialPort(PROP.usbPort, {
        baudrate: 9600
 });
 
-serialPort.on("error", function(err) {
+serialPort.on(ERROR, function(err) {
 	console.log("Error opening serial port ", err);
 });
 
-serialPort.on("open", function () {
+serialPort.on(OPEN, function () {
   console.log("!!! Serial port opened !!! ");
 
   var serialData = "";
-  serialPort.on("data", function(data) {
+  serialPort.on(DATA, function(data) {
 
     serialData = serialData + data;
     if(serialData.indexOf("*") > 1) {
@@ -31,6 +37,7 @@ serialPort.on("open", function () {
 var getUserAndPostOrder = function(internalNumber) {
     console.log("getUserAndPostOrder", internalNumber);
     var url =  PROP.server_url + '/api/users/internalNumber/' + internalNumber;
+    var postOrderUrl = PROP.server_url + '/api/orders';
     var getOptions = { uri: url, headers: {'User-Agent': 'Request-Promise'}};
     rp(getOptions)
         .then(function (response) {
@@ -43,13 +50,13 @@ var getUserAndPostOrder = function(internalNumber) {
 
             var postOptions = {
                             method: 'POST',
-                            uri: 'http://10.132.127.212:8083/api/orders',
+                            uri: postOrderUrl,
                             body: requestBody,
                             json: true
             };
 
             rp(postOptions).then(function(response) {
-                 serialPort.write("success", function(err, results) {
+                 serialPort.write(SUCCESS, function(err, results) {
                      console.log('err ' + err);
                      console.log('results ' + results);
                  });
@@ -57,7 +64,7 @@ var getUserAndPostOrder = function(internalNumber) {
         })
 
         .catch(function (err) {
-            serialPort.write("failure", function(err, results) {
+            serialPort.write(FAILURE, function(err, results) {
                    console.log('err ' + err);
                    console.log('results ' + results);
             });
