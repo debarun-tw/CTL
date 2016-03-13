@@ -1,7 +1,12 @@
-Connecting Raspberry Pi to Arduino
+ ###### Connecting Raspberry Pi to Arduino
 
+![alt tag](https://raw.githubusercontent.com/username/projectname/branch/p
 
-To know which port of the raspberry, Arduino is connected, add this code in server.js, which will log the neccesary details
+##### USb port detection
+
+To know which port of the raspberry, Arduino is connected, add this code in server.js, which will log the necessary details
+
+```javascript
 
 require("serialport").list(function (err, ports) {
   ports.forEach(function(port) {
@@ -10,17 +15,23 @@ require("serialport").list(function (err, ports) {
   });
 });
 
+```
+Once the port number is identified, replace the usbPort in properties.js file
 
+#### Start app on raspberry boot runner
 
- Reference  script for running the app on boot
- Not using this because of issues
+ Not using this
  sudo crontab -e
  @reboot sh /home/pi/Documenets/CTL/appLauncher.sh > /home/pi/Documents/CTL_Logs/cronlog 2>&1
  http://www.instructables.com/id/Raspberry-Pi-Launch-Python-script-on-startup/?ALLSTEPS
 
- Using forever-service
- Steps:
+##### Using forever-service
+ 
+###### Steps:
+ 
+ ```
  sudo forever-service install kanjuice --script app/server.js
  sudo service kanjuice start
  https://github.com/zapty/forever-service
  sudo forever list
+ ````

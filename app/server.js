@@ -57,7 +57,6 @@ var getUserAndPostOrder = function(internalNumber) {
 
             rp(postOptions).then(function(response) {
                  serialPort.write(SUCCESS, function(err, results) {
-                     console.log('err ' + err);
                      console.log('results ' + results);
                  });
             })
