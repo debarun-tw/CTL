@@ -7,7 +7,7 @@ var OPEN = 'open';
 var DATA = 'data';
 var SUCCESS = 'success';
 var FAILURE = 'failure';
-
+var crypto = require('crypto');
 
 var serialPort = new SerialPort(PROP.usbPort, {
        baudrate: 9600
@@ -35,10 +35,22 @@ serialPort.on(OPEN, function () {
 
 
 var getUserAndPostOrder = function(internalNumber) {
+
+    var bKey = new Buffer('abcd1234', 'utf-8');
+
+    var bInput = new Buffer('admin:123abc123', 'utf-8');
+
+    var cipher = crypto.createCipher('AES-128-ECB',bKey);
+
+    var crypted = cipher.update(bInput,null,'base64');
+
+    crypted+=cipher.final('base64');
+
     console.log("getUserAndPostOrder", internalNumber);
+
     var url =  PROP.server_url + '/api/users/internalNumber/' + internalNumber;
     var postOrderUrl = PROP.server_url + '/api/orders';
-    var getOptions = { uri: url, headers: {'User-Agent': 'Request-Promise'}};
+    var getOptions = { uri: url, headers: {'User-Agent': 'Request-Promise', 'Authorization': crypted}};
     rp(getOptions)
         .then(function (response) {
             console.log("res", response);
@@ -52,7 +64,8 @@ var getUserAndPostOrder = function(internalNumber) {
                             method: 'POST',
                             uri: postOrderUrl,
                             body: requestBody,
-                            json: true
+                            json: true,
+                            headers: {'Authorization': crypted}
             };
 
             rp(postOptions).then(function(response) {
